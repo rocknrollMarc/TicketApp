@@ -5,8 +5,7 @@ class ProjectsController < ApplicationController
 	end
 
 	def new
-		@project = Project.new(project_params)
-		@project.save
+		@project = Project.new
 	end
 
 	def create
@@ -17,7 +16,7 @@ class ProjectsController < ApplicationController
 			redirect_to @project
 		else
 			flash[:alert] = "Project has not been created."
-			render "new"
+			render :new
 		end
 
 	end
