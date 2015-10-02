@@ -41,12 +41,18 @@ RSpec.configure do |config|
 	config.use_transactional_fixtures = false
 
 	config.before(:suite) do
-		begin
-			DatabaseCleaner.start
-			FactoryGirl.lint
-		ensure
-			DatabaseCleaner.clean
+		DatabaseCleaner.strategy = :transaction
+		DatabaseCleaner.clean_with :truncation
+	end
+
+	config.around(:each) do |example|
+		DatabaseCleaner.cleaning do
+			example.run
 		end
+	end
+
+	config.after(:each) do
+		DatabaseCleaner.clean
 	end
 
   # RSpec Rails can automatically mix in different behaviours to your tests
